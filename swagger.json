@@ -17,22 +17,13 @@
       "description": "Task management endpoints"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/api/tasks/": {
       "post": {
-        "tags": [
-          "Tasks"
-        ],
+        "tags": ["Tasks"],
         "summary": "Create a new Task",
         "description": "Creates a new task detail",
         "parameters": [
@@ -59,9 +50,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Tasks"
-        ],
+        "tags": ["Tasks"],
         "summary": "Retrieve all tasks",
         "description": "Fetches all stored tasks details from the database.",
         "responses": {
@@ -82,9 +71,7 @@
     },
     "/api/tasks/{id}": {
       "put": {
-        "tags": [
-          "Tasks"
-        ],
+        "tags": ["Tasks"],
         "summary": "Update task by Id",
         "description": "Updates an existing task",
         "parameters": [
@@ -112,9 +99,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Tasks"
-        ],
+        "tags": ["Tasks"],
         "summary": "Retrieve a task by ID",
         "description": "Fetches task details based on a provided ID.",
         "parameters": [
@@ -142,9 +127,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Tasks"
-        ],
+        "tags": ["Tasks"],
         "summary": "Delete a Task",
         "description": "Deletes a task from the database based on the provided ID.",
         "parameters": [
@@ -171,9 +154,7 @@
     },
     "/api/users/register": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Create a new user",
         "description": "Creates new User",
         "parameters": [
@@ -202,9 +183,7 @@
     },
     "/api/users/update/{id}": {
       "put": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Update user by Id",
         "description": "Updates an existing User",
         "parameters": [
@@ -234,9 +213,7 @@
     },
     "/api/users/": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Retrieve all User",
         "description": "Fetches all stored User details from the database.",
         "responses": {
@@ -257,9 +234,7 @@
     },
     "/api/users/{id}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Retrieve a User by ID",
         "description": "Fetches User details based on a provided ID.",
         "parameters": [
@@ -287,9 +262,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Delete a Users",
         "description": "Deletes a Users from the database based on the provided ID.",
         "parameters": [
