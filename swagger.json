@@ -1,0 +1,444 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task Manager API",
+    "description": "API for managing tasks and users",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Tasks",
+      "description": "Task management endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/tasks/": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Create a new Task",
+        "description": "Creates a new task detail",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Task details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/taskInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "500": {
+            "description": "Failed to create task"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Retrieve all tasks",
+        "description": "Fetches all stored tasks details from the database.",
+        "responses": {
+          "200": {
+            "description": "List of tasks retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "404": {
+            "description": "No task data found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/tasks/{id}": {
+      "put": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Update task by Id",
+        "description": "Updates an existing task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Task ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated task details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/taskInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Retrieve a task by ID",
+        "description": "Fetches task details based on a provided ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the task to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task details retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Failed to fetch task details"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Delete a Task",
+        "description": "Deletes a task from the database based on the provided ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the task to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task deleted successfully"
+          },
+          "404": {
+            "description": "task not found"
+          },
+          "500": {
+            "description": "Failed to delete task"
+          }
+        }
+      }
+    },
+    "/api/users/register": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "description": "Creates new User",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "500": {
+            "description": "Failed to create task"
+          }
+        }
+      }
+    },
+    "/api/users/update/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user by Id",
+        "description": "Updates an existing User",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated User details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve all User",
+        "description": "Fetches all stored User details from the database.",
+        "responses": {
+          "200": {
+            "description": "List of User retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "No user data found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve a User by ID",
+        "description": "Fetches User details based on a provided ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the User to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Failed to fetch user details"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a Users",
+        "description": "Deletes a Users from the database based on the provided ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the Users to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users deleted successfully"
+          },
+          "404": {
+            "description": "Users not found"
+          },
+          "500": {
+            "description": "Failed to delete Users"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "12345673884495"
+        },
+        "name": {
+          "type": "string",
+          "example": "John"
+        },
+        "email": {
+          "type": "string",
+          "example": "johndoe@example.com"
+        },
+        "role": {
+          "type": "string",
+          "example": "user"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-03-17T10:05:00Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-03-18T15:02:59.926Z"
+        },
+        "__v": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "UserInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jane Matther"
+        },
+        "email": {
+          "type": "string",
+          "example": "janesmith@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "role": {
+          "type": "string",
+          "example": "user"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "123664849955"
+        },
+        "title": {
+          "type": "string",
+          "example": "new task"
+        },
+        "description": {
+          "type": "string",
+          "example": "how to make it"
+        },
+        "status": {
+          "type": "string",
+          "example": "pending"
+        },
+        "priority": {
+          "type": "string",
+          "example": "medium"
+        },
+        "dueDate": {
+          "type": "string",
+          "example": "2025-04-05"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-03-17T10:05:00Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-03-18T13:32:46.952Z"
+        },
+        "__v": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "taskInput": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "12345678893930hbs89"
+        },
+        "title": {
+          "type": "string",
+          "example": "new task"
+        },
+        "description": {
+          "type": "string",
+          "example": "how to make it"
+        },
+        "status": {
+          "type": "string",
+          "example": "pending"
+        },
+        "priority": {
+          "type": "string",
+          "example": "mdeium"
+        },
+        "dueDate": {
+          "type": "string",
+          "example": "2025-04-21"
+        }
+      }
+    }
+  }
+}
