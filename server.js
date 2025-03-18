@@ -19,6 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get("/", (req, res) => {
+  res.send("Welcome to the Task Manager API! Go to /api-docs for documentation.");
+});
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", userRoutes);
 
