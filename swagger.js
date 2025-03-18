@@ -6,7 +6,7 @@ const doc = {
     description: "API for managing tasks and users",
     version: "1.0.0",
   },
-  host: "localhost:8080", // Change this when deploying
+  host: "cse341-week03-04.onrender.com", // Change this when deploying
   schemes: ["http", "https"],
   consumes: ["application/json"],
   produces: ["application/json"],

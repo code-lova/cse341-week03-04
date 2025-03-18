@@ -5,7 +5,7 @@
     "description": "API for managing tasks and users",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "cse341-week03-04.onrender.com",
   "basePath": "/",
   "tags": [
     {
@@ -28,6 +28,16 @@
     "application/json"
   ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/tasks/": {
       "post": {
         "tags": [
