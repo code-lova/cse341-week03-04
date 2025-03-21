@@ -5,6 +5,11 @@ const createNewTask = async (data) => {
   return await Task.create(data);
 };
 
+// Find task by userId
+const findTaskByUserId = async (userId) => {
+  return await Task.findOne({ userId });
+};
+
 //Find task by title
 const findTaskByTitle = async (title) => {
   return await Task.findOne({ title });
@@ -32,6 +37,7 @@ const deleteTask = async (id) => {
 
 module.exports = {
   createNewTask,
+  findTaskByUserId,
   findTaskByTitle,
   updateTask,
   getAllTask,

@@ -14,6 +14,7 @@ exports.createTask = async (req, res, next) => {
       schema: { $ref: '#/definitions/taskInput' }
     }
     #swagger.responses[400] = { description: 'Validation Error' }
+    #swagger.responses[404] = { description: 'UserId does not exixt' }
     #swagger.responses[500] = { description: 'Failed to create task' }
   */
   const { title, description, priority, status, dueDate, userId } = req.body;
@@ -22,6 +23,11 @@ exports.createTask = async (req, res, next) => {
     const existingTask = await taskService.findTaskByTitle(title);
     if (existingTask) {
       return next(createHttpError(409, "Task title already exists"));
+    }
+
+    const existingUserId = await taskService.findTaskByUserId(userId);
+    if (!existingUserId) {
+      return next(createHttpError(404, "This UserId does not exist"));
     }
 
     const data = { title, description, priority, status, dueDate, userId };
