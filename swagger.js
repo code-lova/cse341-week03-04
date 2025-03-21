@@ -46,7 +46,7 @@ const doc = {
       title: "new task",
       description: "how to make it",
       status: "pending",
-      priority: "mdeium",
+      priority: "medium",
       dueDate: "2025-04-21",
     },
   },

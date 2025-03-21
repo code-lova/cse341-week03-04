@@ -445,7 +445,7 @@
         },
         "priority": {
           "type": "string",
-          "example": "mdeium"
+          "example": "medium"
         },
         "dueDate": {
           "type": "string",
