@@ -63,6 +63,9 @@
           "400": {
             "description": "Validation Error"
           },
+          "404": {
+            "description": "UserId does not exixt"
+          },
           "500": {
             "description": "Failed to create task"
           }
