@@ -5,7 +5,7 @@ const createNewTask = async (data) => {
   return await Task.create(data);
 };
 
-// Find task by userId
+// Find task by user Id
 const findTaskByUserId = async (userId) => {
   return await Task.findOne({ userId });
 };
