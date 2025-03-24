@@ -21,6 +21,25 @@
     "http",
     "https"
   ],
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "description": "Google OAuth2 authentication",
+      "flow": "implicit",
+      "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
+      "scopes": {
+        "openid": "Authenticate with Google",
+        "email": "Access user's email",
+        "profile": "Access user's profile"
+      }
+    },
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT token in the format: Bearer <token>"
+    }
+  },
   "consumes": [
     "application/json"
   ],
@@ -44,8 +63,13 @@
           "Tasks"
         ],
         "summary": "Create a new Task",
-        "description": "Creates a new task detail",
+        "description": "Creates a new task detail. Requires Google OAuth2 authentication.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -63,20 +87,36 @@
           "400": {
             "description": "Validation Error"
           },
-          "404": {
-            "description": "UserId does not exixt"
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "500": {
             "description": "Failed to create task"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "openid",
+              "email",
+              "profile"
+            ]
+          }
+        ]
       },
       "get": {
         "tags": [
           "Tasks"
         ],
         "summary": "Retrieve all tasks",
-        "description": "Fetches all stored tasks details from the database.",
+        "description": "Fetches all stored tasks details from the database. Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of tasks retrieved successfully",
@@ -84,13 +124,25 @@
               "$ref": "#/definitions/Task"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "No task data found"
           },
           "500": {
             "description": "Server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "openid",
+              "email",
+              "profile"
+            ]
+          }
+        ]
       }
     },
     "/api/tasks/{id}": {
@@ -99,7 +151,7 @@
           "Tasks"
         ],
         "summary": "Update task by Id",
-        "description": "Updates an existing task",
+        "description": "Updates an existing task. Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "id",
@@ -107,6 +159,11 @@
             "required": true,
             "type": "string",
             "description": "Task ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           },
           {
             "name": "body",
@@ -122,14 +179,67 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "openid",
+              "email",
+              "profile"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Delete a Task",
+        "description": "Deletes a task from the database based on the provided ID. Requires Google OAuth2 authentication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the task to delete"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "404": {
+            "description": "task not found"
+          },
+          "500": {
+            "description": "Failed to delete task"
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "openid",
+              "email",
+              "profile"
+            ]
+          }
+        ]
       },
       "get": {
         "tags": [
           "Tasks"
         ],
         "summary": "Retrieve a task by ID",
-        "description": "Fetches task details based on a provided ID.",
+        "description": "Fetches task details based on a provided ID. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "id",
@@ -137,6 +247,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the task to retrieve"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -146,40 +261,25 @@
               "$ref": "#/definitions/Task"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "Task not found"
           },
           "500": {
             "description": "Failed to fetch task details"
           }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Tasks"
-        ],
-        "summary": "Delete a Task",
-        "description": "Deletes a task from the database based on the provided ID.",
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "ID of the task to delete"
+            "OAuth2": [
+              "openid",
+              "email",
+              "profile"
+            ]
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "task deleted successfully"
-          },
-          "404": {
-            "description": "task not found"
-          },
-          "500": {
-            "description": "Failed to delete task"
-          }
-        }
+        ]
       }
     },
     "/api/users/register": {
@@ -190,6 +290,11 @@
         "summary": "Create a new user",
         "description": "Creates new User",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -229,6 +334,11 @@
             "description": "User ID"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "description": "Updated User details",
@@ -252,6 +362,13 @@
         ],
         "summary": "Retrieve all User",
         "description": "Fetches all stored User details from the database.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of User retrieved successfully",
@@ -282,6 +399,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the User to retrieve"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -312,6 +434,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the Users to delete"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -323,6 +450,43 @@
           },
           "500": {
             "description": "Failed to delete Users"
+          }
+        }
+      }
+    },
+    "/api/auth/google": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/google/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -373,10 +537,6 @@
           "type": "string",
           "example": "janesmith@example.com"
         },
-        "password": {
-          "type": "string",
-          "example": "123456"
-        },
         "role": {
           "type": "string",
           "example": "user"
@@ -400,7 +560,7 @@
         },
         "status": {
           "type": "string",
-          "example": "pending"
+          "example": "in-progress"
         },
         "priority": {
           "type": "string",
@@ -427,10 +587,6 @@
     "taskInput": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string",
-          "example": "12345678893930hbs89"
-        },
         "title": {
           "type": "string",
           "example": "new task"
@@ -445,7 +601,7 @@
         },
         "priority": {
           "type": "string",
-          "example": "medium"
+          "example": "high"
         },
         "dueDate": {
           "type": "string",

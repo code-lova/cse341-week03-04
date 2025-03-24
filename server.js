@@ -4,10 +4,13 @@ const swaggerDocument = require("./swagger.json");
 const connectDB = require("./config/db");
 const tasksRoutes = require("./routes/taskRoutes");
 const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const notFound = require("./middleware/notFound");
 const cors = require("cors");
+const passport = require("passport");
 require("dotenv").config();
+require("./config/passport");
 
 const app = express();
 
@@ -17,6 +20,7 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 // Routes
 app.get("/", (req, res) => {
@@ -24,6 +28,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes); // Add OAuth routes
 
 // Swagger documentation route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

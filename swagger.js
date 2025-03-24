@@ -14,6 +14,25 @@ const doc = {
     { name: "Users", description: "User management endpoints" },
     { name: "Tasks", description: "Task management endpoints" },
   ],
+  securityDefinitions: {
+    OAuth2: {
+      type: "oauth2",
+      description: "Google OAuth2 authentication",
+      flow: "implicit",
+      authorizationUrl: "https://accounts.google.com/o/oauth2/auth",
+      scopes: {
+        openid: "Authenticate with Google",
+        email: "Access user's email",
+        profile: "Access user's profile",
+      },
+    },
+    BearerAuth: {
+      type: "apiKey",
+      name: "Authorization",
+      in: "header",
+      description: "JWT token in the format: Bearer <token>",
+    },
+  },
   definitions: {
     User: {
       id: "12345673884495",
@@ -27,14 +46,13 @@ const doc = {
     UserInput: {
       name: "Jane Matther",
       email: "janesmith@example.com",
-      password: "123456",
       role: "user",
     },
     Task: {
       userId: "123664849955",
       title: "new task",
       description: "how to make it",
-      status: "pending",
+      status: "in-progress",
       priority: "medium",
       dueDate: "2025-04-05",
       createdAt: "2025-03-17T10:05:00Z",
@@ -42,11 +60,10 @@ const doc = {
       __v: 0,
     },
     taskInput: {
-      userId: "12345678893930hbs89",
       title: "new task",
       description: "how to make it",
       status: "pending",
-      priority: "medium",
+      priority: "high",
       dueDate: "2025-04-21",
     },
   },

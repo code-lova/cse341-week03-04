@@ -6,7 +6,8 @@ exports.createTask = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Create a new Task'
-    #swagger.description = 'Creates a new task detail'
+    #swagger.description = 'Creates a new task detail. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'Task details',
@@ -14,20 +15,16 @@ exports.createTask = async (req, res, next) => {
       schema: { $ref: '#/definitions/taskInput' }
     }
     #swagger.responses[400] = { description: 'Validation Error' }
-    #swagger.responses[404] = { description: 'UserId does not exixt' }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[500] = { description: 'Failed to create task' }
   */
-  const { title, description, priority, status, dueDate, userId } = req.body;
+  const { title, description, priority, status, dueDate } = req.body;
+  const userId = req.user.id;
 
   try {
     const existingTask = await taskService.findTaskByTitle(title);
     if (existingTask) {
       return next(createHttpError(409, "Task title already exists"));
-    }
-
-    const existingUserId = await taskService.findTaskByUserId(userId);
-    if (!existingUserId) {
-      return next(createHttpError(404, "This UserId does not exist"));
     }
 
     const data = { title, description, priority, status, dueDate, userId };
@@ -44,9 +41,10 @@ exports.createTask = async (req, res, next) => {
 // Update a task
 exports.updateTask = async (req, res, next) => {
   /*
-    #swagger.tags = ['Tasks']
+   #swagger.tags = ['Tasks']
     #swagger.summary = 'Update task by Id'
-    #swagger.description = 'Updates an existing task'
+    #swagger.description = 'Updates an existing task. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'Task ID',
@@ -85,11 +83,13 @@ exports.getAllTasks = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Retrieve all tasks'
-    #swagger.description = 'Fetches all stored tasks details from the database.'
+    #swagger.description = 'Fetches all stored tasks details from the database. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
     #swagger.responses[200] = {
       description: 'List of tasks retrieved successfully',
       schema: { $ref: '#/definitions/Task' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'No task data found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
@@ -109,7 +109,8 @@ exports.getTaskById = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Retrieve a task by ID'
-    #swagger.description = 'Fetches task details based on a provided ID.'
+    #swagger.description = 'Fetches task details based on a provided ID. Requires Google OAuth2 authentication'
+    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the task to retrieve',
@@ -120,6 +121,7 @@ exports.getTaskById = async (req, res, next) => {
       description: 'Task details retrieved successfully',
       schema: { $ref: '#/definitions/Task' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'Task not found' }
     #swagger.responses[500] = { description: 'Failed to fetch task details' }
   */
@@ -140,13 +142,15 @@ exports.deleteTask = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Delete a Task'
-    #swagger.description = 'Deletes a task from the database based on the provided ID.'
+    #swagger.description = 'Deletes a task from the database based on the provided ID. Requires Google OAuth2 authentication'
+    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the task to delete',
       required: true,
       type: 'string'
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[200] = { description: 'task deleted successfully' }
     #swagger.responses[404] = { description: 'task not found' }
     #swagger.responses[500] = { description: 'Failed to delete task' }

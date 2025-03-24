@@ -28,10 +28,6 @@ const createtTaskSchema = Joi.object({
       "string.pattern.base": "Due date must be in 'YYYY-MM-DD' format",
       "string.empty": "Due date is required",
     }),
-
-  userId: Joi.string().required().messages({
-    "string.empty": "User ID is required",
-  }),
 });
 
 const updateTaskSchema = Joi.object({
