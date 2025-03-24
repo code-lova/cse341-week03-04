@@ -2,9 +2,6 @@ const redis = require("redis");
 
 const redisClient = redis.createClient({
   url: process.env.REDIS_URL, // Use the environment variable
-  socket: {
-    tls: process.env.REDIS_URL.startsWith("rediss://"), // Enable TLS if using `rediss://`
-  },
 });
 
 redisClient.on("connect", () => {
