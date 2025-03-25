@@ -3,10 +3,17 @@ const swaggerAutogen = require("swagger-autogen")();
 const doc = {
   info: {
     title: "Task Manager API",
-    description: "API for managing tasks and users",
+    description: `
+    API for managing tasks and users.
+    
+    **Authentication Process:**
+    - Visit: [Google OAuth Login](http://localhost:8080/api/auth/google)
+    - Authenticate and get a token from the response.
+    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.
+    - Now, all secured endpoints will be accessible.`,
     version: "1.0.0",
   },
-  host: "cse341-week03-04.onrender.com", // Change this when deploying
+  host: "cse341-week03-04.onrender.com", //"localhost:8080", // Change this when deploying
   schemes: ["http", "https"],
   consumes: ["application/json"],
   produces: ["application/json"],
@@ -15,22 +22,15 @@ const doc = {
     { name: "Tasks", description: "Task management endpoints" },
   ],
   securityDefinitions: {
-    OAuth2: {
-      type: "oauth2",
-      description: "Google OAuth2 authentication",
-      flow: "implicit",
-      authorizationUrl: "https://accounts.google.com/o/oauth2/auth",
-      scopes: {
-        openid: "Authenticate with Google",
-        email: "Access user's email",
-        profile: "Access user's profile",
-      },
-    },
     BearerAuth: {
       type: "apiKey",
       name: "Authorization",
       in: "header",
-      description: "JWT token in the format: Bearer <token>",
+      description: `
+      **Authentication Required**
+      - First, visit: [Google OAuth Login](http://localhost:8080/api/auth/google)
+      - Copy the returned token.
+      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**.`,
     },
   },
   definitions: {
@@ -72,4 +72,23 @@ const doc = {
 const outputFile = "./swagger.json";
 const endpointsFiles = ["./server.js"];
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+  const fs = require("fs");
+
+  // Load the generated swagger file
+  const swaggerData = require("./swagger.json");
+
+  // List of paths to exclude
+  const excludePaths = ["/api/auth/google", "/api/auth/google/callback"];
+
+  // Remove unwanted paths
+  swaggerData.paths = Object.keys(swaggerData.paths)
+    .filter((path) => !excludePaths.includes(path))
+    .reduce((filteredPaths, key) => {
+      filteredPaths[key] = swaggerData.paths[key];
+      return filteredPaths;
+    }, {});
+
+  // Write back the filtered Swagger JSON
+  fs.writeFileSync(outputFile, JSON.stringify(swaggerData, null, 2));
+});

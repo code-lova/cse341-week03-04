@@ -5,8 +5,9 @@ const userService = require("../services/userService");
 exports.registerUser = async (req, res, next) => {
   /*
     #swagger.tags = ['Users']
-    #swagger.summary = 'Create a new user'
-    #swagger.description = 'Creates new User'
+    #swagger.summary = 'Create a new user. Amdin Only'
+    #swagger.description = 'Creates a new user. Requires Google OAuth2 authentication'.
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'User details',
@@ -14,6 +15,8 @@ exports.registerUser = async (req, res, next) => {
       schema: { $ref: '#/definitions/UserInput' }
     }
     #swagger.responses[400] = { description: 'Validation Error' }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[403] = { description: 'Forbidden: Admin access required' }
     #swagger.responses[500] = { description: 'Failed to create task' }
   */
   const { name, email, password, role } = req.body;
@@ -41,8 +44,9 @@ exports.registerUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   /*
     #swagger.tags = ['Users']
-    #swagger.summary = 'Update user by Id'
-    #swagger.description = 'Updates an existing User'
+    #swagger.summary = 'Update user by Id. Accessible to all logged-in users'
+    #swagger.description = 'Updates an existing User. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'User ID',
@@ -80,12 +84,15 @@ exports.updateUser = async (req, res, next) => {
 exports.getUsers = async (req, res, next) => {
   /*
     #swagger.tags = ['Users']
-    #swagger.summary = 'Retrieve all User'
-    #swagger.description = 'Fetches all stored User details from the database.'
+    #swagger.summary = 'Retrieve all User. Admin only'
+    #swagger.description = 'Fetches all users from the database. Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.responses[200] = {
       description: 'List of User retrieved successfully',
       schema: { $ref: '#/definitions/User' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[403] = { description: 'Forbidden: Admin access required' }
     #swagger.responses[404] = { description: 'No user data found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
@@ -104,8 +111,9 @@ exports.getUsers = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   /*
     #swagger.tags = ['Users']
-    #swagger.summary = 'Retrieve a User by ID'
-    #swagger.description = 'Fetches User details based on a provided ID.'
+    #swagger.summary = 'Retrieve a User by ID. Admin only.'
+    #swagger.description = 'Fetches User details by ID. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the User to retrieve',
@@ -116,6 +124,8 @@ exports.getUserById = async (req, res, next) => {
       description: 'User details retrieved successfully',
       schema: { $ref: '#/definitions/User' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[403] = { description: 'Forbidden: Admin access required' }
     #swagger.responses[404] = { description: 'User not found' }
     #swagger.responses[500] = { description: 'Failed to fetch user details' }
   */
@@ -135,15 +145,18 @@ exports.getUserById = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   /*
     #swagger.tags = ['Users']
-    #swagger.summary = 'Delete a Users'
-    #swagger.description = 'Deletes a Users from the database based on the provided ID.'
+    #swagger.summary = 'Delete a Users. Admin only.'
+    #swagger.description = 'Deletes a User from the database by ID. Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the Users to delete',
       required: true,
       type: 'string'
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[200] = { description: 'Users deleted successfully' }
+    #swagger.responses[403] = { description: 'Forbidden: Admin access required' }
     #swagger.responses[404] = { description: 'Users not found' }
     #swagger.responses[500] = { description: 'Failed to delete Users' }
   */

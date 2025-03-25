@@ -6,8 +6,8 @@ exports.createTask = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Create a new Task'
-    #swagger.description = 'Creates a new task detail. Requires Google OAuth2 authentication.'
-    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
+    #swagger.description = 'Creates a new task detail. Requires Google OAuth2 authentication'.
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'Task details',
@@ -44,7 +44,7 @@ exports.updateTask = async (req, res, next) => {
    #swagger.tags = ['Tasks']
     #swagger.summary = 'Update task by Id'
     #swagger.description = 'Updates an existing task. Requires Google OAuth2 authentication.'
-    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'Task ID',
@@ -83,8 +83,8 @@ exports.getAllTasks = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Retrieve all tasks'
-    #swagger.description = 'Fetches all stored tasks details from the database. Requires Google OAuth2 authentication.'
-    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
+    #swagger.description = 'Fetches all tasks from the database. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.responses[200] = {
       description: 'List of tasks retrieved successfully',
       schema: { $ref: '#/definitions/Task' }
@@ -109,8 +109,8 @@ exports.getTaskById = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Retrieve a task by ID'
-    #swagger.description = 'Fetches task details based on a provided ID. Requires Google OAuth2 authentication'
-    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
+    #swagger.description = 'Fetches task by ID. Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the task to retrieve',
@@ -142,8 +142,8 @@ exports.deleteTask = async (req, res, next) => {
   /*
     #swagger.tags = ['Tasks']
     #swagger.summary = 'Delete a Task'
-    #swagger.description = 'Deletes a task from the database based on the provided ID. Requires Google OAuth2 authentication'
-    #swagger.security = [{ OAuth2: ['openid', 'email', 'profile'] }]
+    #swagger.description = 'Deletes a task by ID. Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the task to delete',

@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Task Manager API",
-    "description": "API for managing tasks and users",
+    "description": "\n    API for managing tasks and users.\n    \n    **Authentication Process:**\n    - Visit: [Google OAuth Login](http://localhost:8080/api/auth/google)\n    - Authenticate and get a token from the response.\n    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.\n    - Now, all secured endpoints will be accessible.",
     "version": "1.0.0"
   },
   "host": "cse341-week03-04.onrender.com",
@@ -22,22 +22,11 @@
     "https"
   ],
   "securityDefinitions": {
-    "OAuth2": {
-      "type": "oauth2",
-      "description": "Google OAuth2 authentication",
-      "flow": "implicit",
-      "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
-      "scopes": {
-        "openid": "Authenticate with Google",
-        "email": "Access user's email",
-        "profile": "Access user's profile"
-      }
-    },
     "BearerAuth": {
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "description": "JWT token in the format: Bearer <token>"
+      "description": "\n      **Authentication Required**\n      - First, visit: [Google OAuth Login](http://localhost:8080/api/auth/google)\n      - Copy the returned token.\n      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**."
     }
   },
   "consumes": [
@@ -63,7 +52,7 @@
           "Tasks"
         ],
         "summary": "Create a new Task",
-        "description": "Creates a new task detail. Requires Google OAuth2 authentication.",
+        "description": "Creates a new task detail. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "authorization",
@@ -96,11 +85,7 @@
         },
         "security": [
           {
-            "OAuth2": [
-              "openid",
-              "email",
-              "profile"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -109,7 +94,7 @@
           "Tasks"
         ],
         "summary": "Retrieve all tasks",
-        "description": "Fetches all stored tasks details from the database. Requires Google OAuth2 authentication.",
+        "description": "Fetches all tasks from the database. Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "authorization",
@@ -136,11 +121,7 @@
         },
         "security": [
           {
-            "OAuth2": [
-              "openid",
-              "email",
-              "profile"
-            ]
+            "BearerAuth": []
           }
         ]
       }
@@ -182,11 +163,7 @@
         },
         "security": [
           {
-            "OAuth2": [
-              "openid",
-              "email",
-              "profile"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -195,7 +172,7 @@
           "Tasks"
         ],
         "summary": "Delete a Task",
-        "description": "Deletes a task from the database based on the provided ID. Requires Google OAuth2 authentication",
+        "description": "Deletes a task by ID. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "id",
@@ -226,11 +203,7 @@
         },
         "security": [
           {
-            "OAuth2": [
-              "openid",
-              "email",
-              "profile"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -239,7 +212,7 @@
           "Tasks"
         ],
         "summary": "Retrieve a task by ID",
-        "description": "Fetches task details based on a provided ID. Requires Google OAuth2 authentication",
+        "description": "Fetches task by ID. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "id",
@@ -273,11 +246,7 @@
         },
         "security": [
           {
-            "OAuth2": [
-              "openid",
-              "email",
-              "profile"
-            ]
+            "BearerAuth": []
           }
         ]
       }
@@ -287,8 +256,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Create a new user",
-        "description": "Creates new User",
+        "summary": "Create a new user. Amdin Only",
+        "description": "Creates a new user. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "authorization",
@@ -312,10 +281,21 @@
           "400": {
             "description": "Validation Error"
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "403": {
+            "description": "Forbidden: Admin access required"
+          },
           "500": {
             "description": "Failed to create task"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/update/{id}": {
@@ -323,8 +303,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Update user by Id",
-        "description": "Updates an existing User",
+        "summary": "Update user by Id. Accessible to all logged-in users",
+        "description": "Updates an existing User. Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "id",
@@ -352,7 +332,12 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/": {
@@ -360,8 +345,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Retrieve all User",
-        "description": "Fetches all stored User details from the database.",
+        "summary": "Retrieve all User. Admin only",
+        "description": "Fetches all users from the database. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "authorization",
@@ -376,13 +361,24 @@
               "$ref": "#/definitions/User"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "403": {
+            "description": "Forbidden: Admin access required"
+          },
           "404": {
             "description": "No user data found"
           },
           "500": {
             "description": "Server error"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/{id}": {
@@ -390,8 +386,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Retrieve a User by ID",
-        "description": "Fetches User details based on a provided ID.",
+        "summary": "Retrieve a User by ID. Admin only.",
+        "description": "Fetches User details by ID. Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "id",
@@ -413,20 +409,31 @@
               "$ref": "#/definitions/User"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "403": {
+            "description": "Forbidden: Admin access required"
+          },
           "404": {
             "description": "User not found"
           },
           "500": {
             "description": "Failed to fetch user details"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Users"
         ],
-        "summary": "Delete a Users",
-        "description": "Deletes a Users from the database based on the provided ID.",
+        "summary": "Delete a Users. Admin only.",
+        "description": "Deletes a User from the database by ID. Requires Google OAuth2 authentication",
         "parameters": [
           {
             "name": "id",
@@ -445,33 +452,24 @@
           "200": {
             "description": "Users deleted successfully"
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "403": {
+            "description": "Forbidden: Admin access required"
+          },
           "404": {
             "description": "Users not found"
           },
           "500": {
             "description": "Failed to delete Users"
           }
-        }
-      }
-    },
-    "/api/auth/google": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
+        },
+        "security": [
+          {
+            "BearerAuth": []
           }
-        }
-      }
-    },
-    "/api/auth/google/callback": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        ]
       }
     },
     "/api/auth/logout": {
