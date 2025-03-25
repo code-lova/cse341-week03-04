@@ -9,10 +9,7 @@ const authenticateUser = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return next(
       createHttpError(401, "Unauthorized: No token provided. Please log in using Google.", {
-        details: [
-          "Visit the login link below in your browser to authenticate.",
-          "http://localhost:8080/api/auth/google",
-        ],
+        details: ["Visit the Google OAuth Login link above in your browser to authenticate."],
       })
     );
   }
@@ -32,8 +29,7 @@ const authenticateUser = async (req, res, next) => {
     return next(
       createHttpError(401, "Unauthorized: Invalid or expired token. Please log in again.", {
         details: [
-          "Use the Google login link in your browser to refresh your session.",
-          "http://localhost:8080/api/auth/google",
+          "Use the Google OAuth Login link above, in your browser to refresh your session.",
         ],
       })
     );
