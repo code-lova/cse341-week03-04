@@ -13,7 +13,7 @@ const doc = {
     - Now, all secured endpoints will be accessible.`,
     version: "1.0.0",
   },
-  host: "cse341-week03-04.onrender.com", //"localhost:8080", // Change this when deploying
+  host: "localhost:8080", //"cse341-week03-04.onrender.com", // Change this when deploying
   schemes: ["http", "https"],
   consumes: ["application/json"],
   produces: ["application/json"],

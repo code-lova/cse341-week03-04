@@ -5,7 +5,7 @@
     "description": "\n    API for managing tasks and users.\n    \n    **Authentication Process:**\n    - Visit: [Google OAuth Login](http://localhost:8080/api/auth/google)\n    - Authenticate and get a token from the response.\n    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.\n    - Now, all secured endpoints will be accessible.",
     "version": "1.0.0"
   },
-  "host": "cse341-week03-04.onrender.com",
+  "host": "localhost:8080",
   "basePath": "/",
   "tags": [
     {
