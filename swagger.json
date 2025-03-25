@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Task Manager API",
-    "description": "\n    API for managing tasks and users.\n    \n    **Authentication Process:**\n    - Visit: [Google OAuth Login](http://localhost:8080/api/auth/google)\n    - Authenticate and get a token from the response.\n    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.\n    - Now, all secured endpoints will be accessible.",
+    "description": "\n    API for managing tasks and users.\n    \n    **Authentication Process:**\n    - Visit: [Google OAuth Login](https://cse341-week03-04.onrender.com/api/auth/google)\n    - Authenticate and get a token from the response.\n    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.\n    - Now, all secured endpoints will be accessible.",
     "version": "1.0.0"
   },
   "host": "cse341-week03-04.onrender.com",
@@ -26,7 +26,7 @@
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "description": "\n      **Authentication Required**\n      - First, visit: [Google OAuth Login](http://localhost:8080/api/auth/google)\n      - Copy the returned token.\n      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**."
+      "description": "\n      **Authentication Required**\n      - First, visit: [Google OAuth Login](https://cse341-week03-04.onrender.com/api/auth/google)\n      - Copy the returned token.\n      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**."
     }
   },
   "consumes": [

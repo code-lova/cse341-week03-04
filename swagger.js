@@ -7,7 +7,7 @@ const doc = {
     API for managing tasks and users.
     
     **Authentication Process:**
-    - Visit: [Google OAuth Login](http://localhost:8080/api/auth/google)
+    - Visit: [Google OAuth Login](https://cse341-week03-04.onrender.com/api/auth/google)
     - Authenticate and get a token from the response.
     - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.
     - Now, all secured endpoints will be accessible.`,
@@ -28,7 +28,7 @@ const doc = {
       in: "header",
       description: `
       **Authentication Required**
-      - First, visit: [Google OAuth Login](http://localhost:8080/api/auth/google)
+      - First, visit: [Google OAuth Login](https://cse341-week03-04.onrender.com/api/auth/google)
       - Copy the returned token.
       - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**.`,
     },
